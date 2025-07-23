@@ -8,17 +8,41 @@ sources:
       - name: raw_gz_ship_copy
 
 
+version: 2
+
+sources:
+  - name: raw              # 给 gz_raw_data 起别名 raw
+    schema: gz_raw_data    # 实际 BigQuery 数据集名
+    tables:
+      - name: sales
+        identifier: raw_gz_sales
+      - name: product
+        identifier: raw_gz_product
+      - name: ship
+        identifier: raw_gz_ship
 
 
 version: 2
 
 sources:
-  - name: raw             # alias for gz_raw_data
-    schema: gz_raw_data   # actual BigQuery dataset name
+  - name: raw
+    schema: gz_raw_data
     tables:
       - name: sales
-        identifier: raw_gz_sales_copy
+        identifier: raw_gz_sales
+
+
+version: 2
+
+sources:
+  - name: raw
+    schema: gz_raw_data
+    tables:
+      - name: sales
+        identifier: raw_gz_sales
       - name: product
-        identifier: raw_gz_product_copy
+        identifier: raw_gz_product
       - name: ship
-        identifier: raw_gz_ship_copy
+        identifier: raw_gz_ship
+
+
