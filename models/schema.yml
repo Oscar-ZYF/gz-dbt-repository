@@ -1,26 +1,3 @@
-version: 2
-
-sources:
-  - name: gz_raw_data     # BigQuery dataset name
-    tables:
-      - name: raw_gz_sales_copy
-      - name: raw_gz_product_copy
-      - name: raw_gz_ship_copy
-
-
-version: 2
-
-sources:
-  - name: raw              # 给 gz_raw_data 起别名 raw
-    schema: gz_raw_data    # 实际 BigQuery 数据集名
-    tables:
-      - name: sales
-        identifier: raw_gz_sales
-      - name: product
-        identifier: raw_gz_product
-      - name: ship
-        identifier: raw_gz_ship
-
 
 version: 2
 
@@ -30,19 +7,39 @@ sources:
     tables:
       - name: sales
         identifier: raw_gz_sales
+        description: Sales of Greenweez / we have one row per product_id found in each orders_id
 
+        # Freshness testing
+        loaded_at_field: "CAST(date_date AS TIMESTAMP)"
+        freshness:
+          warn_after: {count: 90, period: day}
 
-version: 2
+        columns:
+          - name: date_date
+            description: Date of purchase
 
-sources:
-  - name: raw
-    schema: gz_raw_data
-    tables:
-      - name: sales
-        identifier: raw_gz_sales
       - name: product
         identifier: raw_gz_product
+        description: List of all products of Greenweez
+        columns:
+          - name: products_id
+            description: Unique product ID
+            tests:
+              - not_null
+              - unique
+          - name: purchse_price
+            description: Purchase price of the product
+
       - name: ship
         identifier: raw_gz_ship
-
-
+        description: Shipping details of orders
+        columns:
+          - name: order_id
+            description: Unique order ID
+            tests:
+              - not_null
+              - unique
+          - name: shipping_fee
+            description: Shipping fee applied
+          - name: ship_cost
+            description: Cost of shipping

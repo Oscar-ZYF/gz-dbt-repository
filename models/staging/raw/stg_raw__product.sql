@@ -5,13 +5,14 @@ WITH source AS (
 
 renamed AS (
     SELECT
-        product_id,
+        products_id,  -- 修正列名
         CAST(purchse_price AS FLOAT64) AS purchase_price,
-        product_name,
-        category,
-        created_at
     FROM source
 )
 
-SELECT * FROM renamed
+SELECT *
+FROM renamed
+
+
+
 
