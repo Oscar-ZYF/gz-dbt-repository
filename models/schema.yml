@@ -1,0 +1,24 @@
+version: 2
+
+sources:
+  - name: gz_raw_data     # BigQuery dataset name
+    tables:
+      - name: raw_gz_sales_copy
+      - name: raw_gz_product_copy
+      - name: raw_gz_ship_copy
+
+
+
+
+version: 2
+
+sources:
+  - name: raw             # alias for gz_raw_data
+    schema: gz_raw_data   # actual BigQuery dataset name
+    tables:
+      - name: sales
+        identifier: raw_gz_sales_copy
+      - name: product
+        identifier: raw_gz_product_copy
+      - name: ship
+        identifier: raw_gz_ship_copy
