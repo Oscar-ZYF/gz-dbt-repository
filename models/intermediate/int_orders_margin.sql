@@ -1,15 +1,10 @@
-WITH order_summary AS (
-    SELECT
-        s.orders_id,
-        MAX(s.date_date) AS date_date,   -- 如果订单有多行，用 MAX/MIN 取一个日期
-        SUM(s.revenue) AS revenue,
-        SUM(s.quantity) AS quantity,
-        SUM(s.purchase_cost) AS purchase_cost,
-        SUM(s.margin) AS margin
-    FROM {{ ref('int_sales_margin') }} AS s
-    GROUP BY s.orders_id
-)
-
-SELECT *
-FROM order_summary
-ORDER BY orders_id
+SELECT
+     orders_id,
+     date_date,
+     ROUND(SUM(revenue),2) as revenue,
+     ROUND(SUM(quantity),2) as quantity,
+     ROUND(SUM(purchase_cost),2) as purchase_cost,
+     ROUND(SUM(margin),2) as margin
+ FROM {{ ref("int_sales_margin") }}
+ GROUP BY orders_id,date_date
+ ORDER BY orders_id DESC
